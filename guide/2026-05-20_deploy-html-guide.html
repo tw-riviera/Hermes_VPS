@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>一鍵 Deploy HTML to GitHub Pages — Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Noto+Sans+TC:wght@300;400;500;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Noto Sans TC', sans-serif;
+  background: #FFFFFF;
+  color: #1C1C1C;
+  line-height: 1.75;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+.page {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 80px 48px 120px;
+}
+.top-meta {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  color: #8A8A8A;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  margin-bottom: 60px;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 46px;
+  font-weight: 400;
+  line-height: 1.15;
+  margin-bottom: 8px;
+  letter-spacing: -0.5px;
+}
+.subtitle {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 20px;
+  font-weight: 400;
+  color: #555;
+  margin-bottom: 60px;
+  line-height: 1.4;
+}
+h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 28px;
+  font-weight: 400;
+  margin-top: 48px;
+  margin-bottom: 12px;
+  color: #1C1C1C;
+  letter-spacing: -0.3px;
+}
+h2 .num {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 13px;
+  font-weight: 400;
+  color: #8A8A8A;
+  margin-right: 12px;
+  vertical-align: top;
+}
+h3 {
+  font-family: 'Noto Sans TC', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  margin: 32px 0 12px;
+  color: #1C1C1C;
+  letter-spacing: 0.3px;
+}
+p {
+  font-size: 15px;
+  font-weight: 400;
+  color: #333;
+  margin-bottom: 16px;
+}
+p.lead {
+  font-size: 18px;
+  font-weight: 300;
+  color: #444;
+  line-height: 1.8;
+  margin-bottom: 32px;
+}
+.section-divider {
+  margin: 60px 0;
+  height: 1px;
+  background: #E0E0E0;
+}
+.tech-block {
+  margin: 28px 0;
+  padding: 24px 28px;
+  background: #FAFAFA;
+  border-left: 2px solid #D0CFCA;
+}
+.tech-block h4 {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  font-weight: 500;
+  color: #8A8A8A;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  margin-bottom: 12px;
+}
+.tech-block p,
+.tech-block li,
+.tech-block code {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12.5px;
+  line-height: 1.8;
+  color: #444;
+  margin-bottom: 8px;
+}
+.tech-block ul {
+  list-style: none;
+  padding-left: 0;
+}
+.tech-block li {
+  padding-left: 16px;
+  position: relative;
+}
+.tech-block li::before {
+  content: "—";
+  position: absolute;
+  left: 0;
+  color: #999;
+}
+.tech-block code {
+  background: #F0F0F0;
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 12px;
+}
+.cmd-table {
+  width: 100%;
+  margin: 20px 0;
+  border-collapse: collapse;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11.5px;
+}
+.cmd-table th {
+  text-align: left;
+  padding: 10px 8px;
+  border-bottom: 1px solid #D0CFCA;
+  font-weight: 500;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-size: 10px;
+}
+.cmd-table td {
+  padding: 10px 8px;
+  border-bottom: 1px solid #EEE;
+  color: #333;
+  vertical-align: top;
+}
+.cmd-table td.cmd {
+  color: #555;
+  word-break: break-all;
+}
+.pull-quote {
+  margin: 40px 0;
+  padding: 24px 0 24px 32px;
+  border-left: 2px solid #1C1C1C;
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 20px;
+  line-height: 1.6;
+  color: #333;
+}
+.footer-note {
+  margin-top: 80px;
+  padding-top: 24px;
+  border-top: 1px solid #E0E0E0;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  color: #AAA;
+  letter-spacing: 0.5px;
+}
+@media (max-width: 640px) {
+  .page { padding: 48px 24px 80px; }
+  h1 { font-size: 34px; }
+  .subtitle { font-size: 18px; }
+  h2 { font-size: 22px; }
+  .pull-quote { font-size: 17px; padding-left: 20px; }
+}
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <div class="top-meta">
+    <span>Hermes VPS · Guide</span>
+    <span>2026.05.20</span>
+  </div>
+
+  <h1>一鍵 Deploy HTML<br>to GitHub Pages</h1>
+  <p class="subtitle">
+    From a single file to a living archive.
+  </p>
+
+  <div class="section-divider"></div>
+
+  <h2><span class="num">01</span>前置條件</h2>
+  <p class="lead">
+    不需要服務器、不需要域名、不需要後端。唯一需要的是一個 GitHub 帳號、一個 token、和一份準備好的 HTML 檔案。
+  </p>
+
+  <div class="tech-block">
+    <h4>需要什麼</h4>
+    <ul>
+      <li>GitHub 帳號（免費）</li>
+      <li>Personal Access Token（<code>repo</code> 權限）</li>
+      <li>一個 public repo（例如 <code>Hermes_VPS</code>）</li>
+      <li>準備好的 HTML 檔案（自包含或使用 CDN 字體/資源）</li>
+    </ul>
+  </div>
+
+  <h3>1.1 為何選 GitHub Pages</h3>
+  <p>
+    其他選項包括 Vercel、Netlify、Cloudflare Pages。但 GitHub Pages 的優勢在於：
+    它與 Git 版本控制原生整合，每一次 push 都是一次部署；
+    不需要額外帳號或 CLI 工具；
+    對於靜態文件（HTML、CSS、JS）來說完全免費、無流量限制。
+  </p>
+
+  <div class="section-divider"></div>
+
+  <h2><span class="num">02</span>七步部署</h2>
+
+  <h3>Step 1 — 準備 Token</h3>
+  <p>
+    前往 GitHub → Settings → Developer settings → Personal access tokens → Fine-grained tokens。
+    新增一個 token，選擇 <code>Contents (read+write)</code> 和 <code>Pages (read+write)</code> 權限。
+    將 token 保存在本地環境變數 <code>GITHUB_TOKEN</code>。
+  </p>
+
+  <div class="tech-block">
+    <h4>驗證 Token</h4>
+    <p><code>curl -H "Authorization: token $GITHUB_TOKEN" https://api.github.com/user | grep login</code></p>
+    <p>如果回傳你的 GitHub 用戶名，代表 token 有效。</p>
+  </div>
+
+  <h3>Step 2 — 創建 Repo</h3>
+  <p>
+    可以用 GitHub 網頁手動創建，或用 API 自動化：
+  </p>
+
+  <div class="tech-block">
+    <h4>API 創建</h4>
+    <p><code>curl -X POST -H "Authorization: token $GITHUB_TOKEN" \<br>
+       &nbsp;&nbsp;-H "Accept: application/vnd.github.v3+json" \<br>
+       &nbsp;&nbsp;https://api.github.com/user/repos \<br>
+       &nbsp;&nbsp;-d '{"name":"Hermes_VPS","description":"靜態網站與日誌存檔","private":false}'</code></p>
+  </div>
+
+  <h3>Step 3 — Clone 到本地</h3>
+  <p>
+    用 token 組成 URL 進行 clone，避免每次都要輸入密碼：
+  </p>
+
+  <div class="tech-block">
+    <h4>Clone 指令</h4>
+    <p><code>git clone "https://${GITHUB_TOKEN}@github.com/用戶名/Hermes_VPS.git"</code></p>
+  </div>
+
+  <h3>Step 4 — 放入檔案</h3>
+  <p>
+    將你的 HTML 檔案放入 repo 根目錄。如果想要一個簡單的單頁網站，
+    把入口檔案命名為 <code>index.html</code>。
+  </p>
+
+  <h3>Step 5 — Git 提交</h3>
+  <p>
+    設定 git identity 後提交：
+  </p>
+
+  <div class="tech-block">
+    <h4>提交指令</h4>
+    <p><code>git config user.email "deploy@hermes.local"</code></p>
+    <p><code>git config user.name "Hermes Agent"</code></p>
+    <p><code>git add .</code></p>
+    <p><code>git commit -m "部署新版本"</code></p>
+  </div>
+
+  <h3>Step 6 — Push</h3>
+  <p>
+    <code>git push origin main</code>
+  </p>
+
+  <h3>Step 7 — 啟用 GitHub Pages</h3>
+  <p>
+    第一次需要手動開啟或用 API 啟用 Pages：
+  </p>
+
+  <div class="tech-block">
+    <h4>API 啟用 Pages</h4>
+    <p><code>curl -X POST -H "Authorization: token $GITHUB_TOKEN" \<br>
+       &nbsp;&nbsp;https://api.github.com/repos/用戶名/Hermes_VPS/pages \<br>
+       &nbsp;&nbsp;-d '{"source":{"branch":"main","path":"/"}}'</code></p>
+  </div>
+
+  <p>
+    等待 5-10 分鐘後，網站會在 <code>https://用戶名.github.io/Hermes_VPS/</code> 上線。
+  </p>
+
+  <div class="section-divider"></div>
+
+  <h2><span class="num">03</span>遇到的困難</h2>
+
+  <h3>3.1 404 Not Found</h3>
+  <p>
+    第一次部署後最常見的問題。原因通常不是錯誤，而是時間——GitHub Pages 需要 5-10 分鐘來 build 和分發 CDN。
+    刷新、等待、用無痕視窗測試，大部分情況都是瀏覽器緩存而已。
+  </p>
+
+  <h3>3.2 Token 權限不足</h3>
+  <p>
+    Fine-grained token 需要明確選擇 repo 的寫入權限。如果用舊版的 Classic token，要確保 <code>repo</code> scope 已勾選。
+    錯誤訊息通常是 <code>Resource not accessible by personal access token</code>。
+  </p>
+
+  <h3>3.3 檔案路徑錯誤</h3>
+  <p>
+    GitHub Pages 預設尋找 <code>index.html</code> 作為入口。如果你的主檔叫 <code>my-log.html</code>，
+    直接訪問根目錄會看到 404。解決方法：重命名為 <code>index.html</code>，
+    或者用子目錄（例如 <code>log/index.html</code>）。
+  </p>
+
+  <h3>3.4 Private Repo 的限制</h3>
+  <p>
+    GitHub 免費方案不支援 private repo 的 Pages。如果你的 repo 是 private，
+    須升級至 GitHub Pro 或改為 public。
+  </p>
+
+  <div class="section-divider"></div>
+
+  <h2><span class="num">04</span>進階用法</h2>
+
+  <h3>4.1 分類目錄</h3>
+  <p>
+    當檔案越來越多時，建議建立子目錄分類：
+  </p>
+
+  <div class="tech-block">
+    <h4>目錄結構建議</h4>
+    <p><code>Hermes_VPS/</code></p>
+    <p><code>&nbsp;&nbsp;├── log/</code></p>
+    <p><code>&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;├── index.html&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(日誌目錄)</code></p>
+    <p><code>&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;└── 2026-05-20.html</code></p>
+    <p><code>&nbsp;&nbsp;├── guide/</code></p>
+    <p><code>&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;└── deploy-guide.html</code></p>
+    <p><code>&nbsp;&nbsp;├── artwork/</code></p>
+    <p><code>&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;└── void-mathematics.html</code></p>
+    <p><code>&nbsp;&nbsp;└── index.html&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(主頁)</code></p>
+  </div>
+
+  <h3>4.2 自動更新 Table of Content</h3>
+  <p>
+    每次新增檔案後手動更新 TOC 很煩。建議寫一個 Python 腳本，
+    自動掃描目錄、擷取標題、重新生成 TOC HTML：
+  </p>
+
+  <div class="tech-block">
+    <h4>自動化要點</h4>
+    <ul>
+      <li>遍歷子目錄中的 .html 檔案</li>
+      <li>用 regex 擷取 &lt;title&gt; 或 &lt;h1&gt; 作為顯示標題</li>
+      <li>擷取第一段正文作為簡介</li>
+      <li>重新寫入 table-of-content.html</li>
+      <li>提交時一併 push 上去</li>
+    </ul>
+  </div>
+
+  <h3>4.3 一次部署多個檔案</h3>
+  <p>
+    不需要每個檔案都獨立 push。把所有檢議完畢的檔案一次過 add、commit、push，
+    GitHub Pages 會一次過 build 整個 site。
+  </p>
+
+  <div class="section-divider"></div>
+
+  <h2><span class="num">05</span>Hermes 實踐方法</h2>
+
+  <h3>5.1 Hermes 如何幫你做</h3>
+  <p>
+    這份指南本身就是由 Hermes Agent 生成並部署的。
+    模式是：用戶提供結構與內容要求，Hermes 負責寫 HTML、處理 Git 流程、push 上去。
+    用戶唯一需要的是在 Command Approval 時點頭。
+  </p>
+
+  <h3>5.2 呼叫過的 Tools</h3>
+
+  <table class="cmd-table">
+    <tr>
+      <th style="width:22%;">Tool</th>
+      <th style="width:38%;">用途</th>
+      <th style="width:40%;">說明</th>
+    </tr>
+    <tr>
+      <td><strong>read_file</strong></td>
+      <td>讀取現有 HTML 結構</td>
+      <td>複製舊檔案的排版語法作為新檔模板</td>
+    </tr>
+    <tr>
+      <td><strong>write_file</strong></td>
+      <td>寫入新的 HTML 檔案</td>
+      <td>在本地生成完整的自包含 HTML</td>
+    </tr>
+    <tr>
+      <td><strong>terminal</strong></td>
+      <td>Git clone / commit / push</td>
+      <td>執行 git 與 curl 指令</td>
+    </tr>
+    <tr>
+      <td><strong>execute_code</strong></td>
+      <td>自動化腳本</td>
+      <td>遍歷檔案、生成 TOC、擷取標題</td>
+    </tr>
+    <tr>
+      <td><strong>session_search</strong></td>
+      <td>找回舊對話</td>
+      <td>確認之前用過的指令和配置</td>
+    </tr>
+  </table>
+
+  <h3>5.3 需要權限的命令</h3>
+
+  <p>
+    以下是部署過程中需要用戶批准的主要命令，含中文解釋。
+  </p>
+
+  <div class="tech-block">
+    <h4>git clone 與 token</h4>
+    <p><code>git clone "https://${GITHUB_TOKEN}@github.com/用戶名/Hermes_VPS.git"</code></p>
+    <p>目的：將遠端 repo 拉到本地工作目錄。</p>
+    <p>風陰：低。Token 位於 URL 中，不會泄露到 shell history。</p>
+    <p>必要性：無法本地編輯遠端 repo 內容，必須先 clone。</p>
+  </div>
+
+  <div class="tech-block">
+    <h4>curl + python 驗證 API</h4>
+    <p><code>curl -s -H "Authorization: token $GITHUB_TOKEN" ... | python3 -c "..."</code></p>
+    <p>目的：查詢 GitHub API 確認 repo 狀態與 Pages 是否啟用。</p>
+    <p>風陰：中。管道輸出到 Python 可能有資安風險，但因為是只讀查詢，無法改變任何設定。</p>
+    <p>必要性：確認 Pages 已啟用才能預測 URL，避免白等。</p>
+  </div>
+
+  <div class="tech-block">
+    <h4>git rm 與重新結構</h4>
+    <p><code>git rm 舊檔案 &amp;&amp; git mv log/檔案 guide/</code></p>
+    <p>目的：重新分類檔案，移除遺留、建立新目錄結構。</p>
+    <p>風陰：低至中。只影響 Git 歷史，不會刪除檔案本身（可以 git restore 恢復）。</p>
+    <p>必要性：當需要重組 repo 目錄時使用。</p>
+  </div>
+
+  <div class="tech-block">
+    <h4>git push --force</h4>
+    <p><code>git push origin main --force</code></p>
+    <p>目的：將本地修改覆蓋遠端 branch。</p>
+    <p>風陰：中。如果多人協作，force push 會覆蓋他人的提交。</p>
+    <p>必要性：個人 repo 而且確認沒有其他人同時編輯時安全。</p>
+  </div>
+
+  <div class="section-divider"></div>
+
+  <h2><span class="num">06</span>工作流程清單</h2>
+
+  <p class="lead">
+    以後每次生成新 log 或 guide 時，以下是標準流程。
+  </p>
+
+  <div class="tech-block">
+    <h4>標準 SOP</h4>
+    <ul>
+      <li>1. 寫 HTML 檔案 → 保存至 /opt/data/home/</li>
+      <li>2. git clone repo 到 /tmp/</li>
+      <li>3. 複製檔案到對應目錄（log/ / guide/ / artwork/ 之一）</li>
+      <li>4. 執行 update-toc.py 自動更新該目錄的 TOC</li>
+      <li>5. git add -A → git commit → git push origin main</li>
+      <li>6. 等待 1-2 分鐘，檢查 https://用戶名.github.io/Hermes_VPS/</li>
+    </ul>
+  </div>
+
+  <div class="section-divider"></div>
+
+  <h2><span class="num">07</span>一句話</h2>
+
+  <div class="pull-quote">
+    最好的部署不是把檔案送上雲端，<br>
+    而是讓每一次送出去的東西，<br>
+    都能被未來的自己找到。
+  </div>
+
+  <div class="footer-note">
+    <span class="mono">Hermes VPS</span> · Guide · 2026.05.20
+  </div>
+
+</div>
+
+</body>
+</html>
