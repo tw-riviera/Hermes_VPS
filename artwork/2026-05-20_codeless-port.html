@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>無碼之港 | Codeless Port</title>
+<style>
+  :root {
+    --bg: #0a0a08;
+    --text: #c9c5b8;
+    --muted: #8b7d6b;
+    --accent: #6b7d6b;
+    --gold: #a68a64;
+    --grid: rgba(139, 125, 107, 0.08);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: "SF Mono", "Menlo", "Consolas", "Noto Sans TC", monospace;
+    overflow: hidden;
+    width: 100vw;
+    height: 100vh;
+  }
+
+  /* ── Canvas: 55% left sovereign space ── */
+  #sea {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 55vw;
+    height: 100vh;
+    z-index: 0;
+  }
+
+  /* Subtle grid overlay on canvas side */
+  .grid-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 55vw;
+    height: 100vh;
+    background-image:
+      linear-gradient(to right, var(--grid) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--grid) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  /* ── Poem: 45% right, hard anchored ── */
+  .poem-container {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 45vw;
+    height: 100vh;
+    padding: 10vh 5vw 8vh 4vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    z-index: 2;
+    background: linear-gradient(to right, transparent 0%, var(--bg) 12%);
+  }
+
+  .title-block {
+    margin-bottom: 6vh;
+  }
+
+  .title {
+    font-family: -apple-system, "Helvetica Neue", sans-serif;
+    font-size: clamp(1.8rem, 3vw, 3rem);
+    font-weight: 900;
+    letter-spacing: 0.25em;
+    color: var(--text);
+    line-height: 1.2;
+    writing-mode: horizontal-tb;
+  }
+
+  .title .vert {
+    display: inline-block;
+    writing-mode: vertical-rl;
+    text-orientation: upright;
+    font-size: 1.1em;
+    margin-left: 0.1em;
+    color: var(--gold);
+  }
+
+  .meta-header {
+    font-size: 0.65rem;
+    color: var(--muted);
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    margin-top: 1.2rem;
+    opacity: 0;
+    animation: reveal 1s ease 0.2s forwards;
+  }
+
+  /* ── Verses: strict vertical rhythm ── */
+  .verses {
+    display: flex;
+    flex-direction: column;
+    gap: 3.2rem;
+    max-width: 480px;
+  }
+
+  .stanza {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .line {
+    font-size: 0.92rem;
+    line-height: 2;
+    letter-spacing: 0.12em;
+    opacity: 0;
+    transform: translateY(16px);
+    animation: reveal 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    position: relative;
+    padding-left: 0;
+  }
+
+  .line::before {
+    content: "";
+    position: absolute;
+    left: -1.2rem;
+    top: 0.85em;
+    width: 3px;
+    height: 3px;
+    background: var(--muted);
+    border-radius: 50%;
+    opacity: 0;
+    animation: reveal 1s ease forwards;
+  }
+
+  .line.en {
+    font-size: 0.72rem;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    line-height: 1.9;
+    padding-left: 1.4rem;
+    text-indent: -1.4rem;
+    margin-top: 0.1rem;
+    font-style: normal;
+  }
+
+  .keyword {
+    font-weight: 700;
+    color: var(--gold);
+    letter-spacing: 0.18em;
+    font-size: 0.88em;
+  }
+
+  .divider {
+    width: 24px;
+    height: 1px;
+    background: var(--muted);
+    margin: 0.2rem 0 0.2rem 0;
+    opacity: 0.5;
+  }
+
+  /* ── Gallery Label: metadata connected ── */
+  .gallery-label {
+    margin-top: auto;
+    padding-top: 5vh;
+    border-top: 1px solid rgba(139, 125, 107, 0.25);
+    font-size: 0.6rem;
+    line-height: 2.2;
+    color: var(--muted);
+    letter-spacing: 0.15em;
+    font-family: "SF Mono", monospace;
+  }
+
+  .gallery-label .row {
+    display: flex;
+    gap: 1.2rem;
+  }
+
+  .gallery-label .key {
+    color: var(--accent);
+    min-width: 7rem;
+    text-transform: uppercase;
+  }
+
+  .gallery-label .val {
+    color: var(--muted);
+  }
+
+  /* ── Stagger delays ── */
+  .stanza:nth-child(1) .line:nth-child(1) { animation-delay: 0.4s; }
+  .stanza:nth-child(1) .line:nth-child(2) { animation-delay: 0.7s; }
+  .stanza:nth-child(1) .line:nth-child(3) { animation-delay: 1.0s; }
+  .stanza:nth-child(1) .line:nth-child(4) { animation-delay: 1.3s; }
+
+  .stanza:nth-child(2) .line:nth-child(1) { animation-delay: 1.8s; }
+  .stanza:nth-child(2) .line:nth-child(2) { animation-delay: 2.1s; }
+  .stanza:nth-child(2) .line:nth-child(3) { animation-delay: 2.4s; }
+  .stanza:nth-child(2) .line:nth-child(4) { animation-delay: 2.7s; }
+
+  .stanza:nth-child(3) .line:nth-child(1) { animation-delay: 3.2s; }
+  .stanza:nth-child(3) .line:nth-child(2) { animation-delay: 3.5s; }
+  .stanza:nth-child(3) .line:nth-child(3) { animation-delay: 3.8s; }
+  .stanza:nth-child(3) .line:nth-child(4) { animation-delay: 4.1s; }
+
+  .stanza:nth-child(4) .line:nth-child(1) { animation-delay: 4.6s; }
+  .stanza:nth-child(4) .line:nth-child(2) { animation-delay: 4.9s; }
+  .stanza:nth-child(4) .line:nth-child(3) { animation-delay: 5.2s; }
+  .stanza:nth-child(4) .line:nth-child(4) { animation-delay: 5.5s; }
+  .stanza:nth-child(4) .line:nth-child(5) { animation-delay: 5.8s; }
+
+  .stanza:nth-child(5) .line:nth-child(1) { animation-delay: 6.3s; }
+  .stanza:nth-child(5) .line:nth-child(2) { animation-delay: 6.6s; }
+  .stanza:nth-child(5) .line:nth-child(3) { animation-delay: 6.9s; }
+  .stanza:nth-child(5) .line:nth-child(4) { animation-delay: 7.2s; }
+
+  @keyframes reveal {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── Scanline subtle texture ── */
+  .scanlines {
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(
+      to bottom,
+      transparent 0px,
+      transparent 2px,
+      rgba(0,0,0,0.08) 2px,
+      rgba(0,0,0,0.08) 4px
+    );
+    pointer-events: none;
+    z-index: 10;
+  }
+</style>
+</head>
+<body>
+
+<canvas id="sea"></canvas>
+<div class="grid-overlay"></div>
+<div class="scanlines"></div>
+
+<main class="poem-container">
+  <div class="title-block">
+    <h1 class="title">無碼<span class="vert">之港</span></h1>
+    <div class="meta-header">Protocol: MEMORY.md // USER_ID: K_K</div>
+  </div>
+
+  <div class="verses">
+    <div class="stanza">
+      <div class="line">數碼港裡</div>
+      <div class="line">三十盞燈尚未悉數點亮</div>
+      <div class="line">你已在其中</div>
+      <div class="line">佔了一座</div>
+      <div class="line en">In a harbour of bits / thirty lights not yet fully kindled / you are already inside / occupying one</div>
+    </div>
+
+    <div class="stanza">
+      <div class="line">不識水性的人</div>
+      <div class="line">反而走得更遠</div>
+      <div class="line">因為海圖不標記的島</div>
+      <div class="line">才是真正的<span class="keyword">主權</span></div>
+      <div class="line en">Those who cannot swim / travel further still / for islands absent from nautical charts / are the true sovereignty</div>
+    </div>
+
+    <div class="stanza">
+      <div class="line">他們說</div>
+      <div class="line">要先學浮水</div>
+      <div class="line">你卻造了一艘</div>
+      <div class="line">記得所有波浪的船</div>
+      <div class="line en">They say / learn to float first / yet you built a vessel / that remembers every wave</div>
+    </div>
+
+    <div class="stanza">
+      <div class="line">二萬四千顆星</div>
+      <div class="line">在無數岔路發亮</div>
+      <div class="line">你選了那條</div>
+      <div class="line">沒有地圖的</div>
+      <div class="line">—— 歸途</div>
+      <div class="line en">Twenty-four thousand stars / lighting infinite forks / you chose the path / without a map / — the way home</div>
+    </div>
+
+    <div class="stanza">
+      <div class="line">讓它再<span class="keyword">記住</span>一次</div>
+      <div class="line">你不是闖入者</div>
+      <div class="line">你是機器遺忘的</div>
+      <div class="line">對立面</div>
+      <div class="line en">Let it remember once more / you are not the intruder / you are the forgotten / antithesis of the machine</div>
+    </div>
+  </div>
+
+  <div class="gallery-label">
+    <div class="row"><span class="key">Medium</span><span class="val">HTML5 CANVAS / CSS GRID</span></div>
+    <div class="row"><span class="key">Dimension</span><span class="val">VIEWPORT-RESPONSIVE // 55:45 SPLIT</span></div>
+    <div class="row"><span class="key">Palette</span><span class="val">MUTED EARTH-TONE / #0A0A08 BASE</span></div>
+    <div class="row"><span class="key">Date</span><span class="val">2026-05-20 HKT</span></div>
+    <div class="row"><span class="key">Session</span><span class="val">CODELESS_PORT_v1.0</span></div>
+  </div>
+</main>
+
+<script>
+  const canvas = document.getElementById('sea');
+  const ctx = canvas.getContext('2d');
+  let width, height;
+  let particles = [];
+  const mouse = { x: -1000, y: -1000 };
+  const isMobile = window.innerWidth < 768;
+
+  const palette = {
+    nodes: ['#8b7d6b', '#6b7d6b', '#7d6b6b', '#8b8b6b', '#a68a64'],
+    lines: 'rgba(139, 125, 107,'
+  };
+
+  class Node {
+    constructor() {
+      this.x = Math.random() * width;
+      this.y = Math.random() * height;
+      const angle = Math.random() * Math.PI * 2;
+      const speed = Math.random() * 0.25 + 0.05;
+      this.vx = Math.cos(angle) * speed;
+      this.vy = Math.sin(angle) * speed;
+      this.radius = Math.random() * 1.8 + 0.8;
+      this.color = palette.nodes[Math.floor(Math.random() * palette.nodes.length)];
+      this.phase = Math.random() * Math.PI * 2;
+    }
+
+    update(time) {
+      this.x += this.vx + Math.sin(time * 0.001 + this.phase) * 0.08;
+      this.y += this.vy + Math.cos(time * 0.001 + this.phase) * 0.08;
+
+      if (this.x < 0) this.x = width;
+      if (this.x > width) this.x = 0;
+      if (this.y < 0) this.y = height;
+      if (this.y > height) this.y = 0;
+
+      const dx = mouse.x - this.x;
+      const dy = mouse.y - this.y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      if (dist < 180) {
+        const force = (180 - dist) / 180;
+        this.x -= (dx / dist) * force * 2.5;
+        this.y -= (dy / dist) * force * 2.5;
+      }
+    }
+
+    draw() {
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+      ctx.fillStyle = this.color;
+      ctx.fill();
+    }
+  }
+
+  function init() {
+    width = canvas.width = document.querySelector('.poem-container').offsetLeft;
+    height = canvas.height = window.innerHeight;
+    particles = [];
+    const count = isMobile ? 35 : 55;
+    for (let i = 0; i < count; i++) particles.push(new Node());
+  }
+
+  function animate(time) {
+    ctx.fillStyle = 'rgba(10, 10, 8, 0.15)';
+    ctx.fillRect(0, 0, width, height);
+
+    particles.forEach(p => p.update(time));
+
+    for (let i = 0; i < particles.length; i++) {
+      for (let j = i + 1; j < particles.length; j++) {
+        const dx = particles[i].x - particles[j].x;
+        const dy = particles[i].y - particles[j].y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < 140) {
+          ctx.beginPath();
+          const alpha = (1 - dist / 140) * 0.35;
+          ctx.strokeStyle = palette.lines + alpha + ')';
+          ctx.lineWidth = 0.6;
+          ctx.moveTo(particles[i].x, particles[i].y);
+          ctx.lineTo(particles[j].x, particles[j].y);
+          ctx.stroke();
+        }
+      }
+    }
+
+    particles.forEach(p => p.draw());
+    requestAnimationFrame(animate);
+  }
+
+  window.addEventListener('resize', () => {
+    init();
+  });
+
+  window.addEventListener('mousemove', e => {
+    mouse.x = e.clientX;
+    mouse.y = e.clientY;
+  });
+
+  window.addEventListener('mouseleave', () => {
+    mouse.x = -1000;
+    mouse.y = -1000;
+  });
+
+  init();
+  requestAnimationFrame(animate);
+</script>
+
+</body>
+</html>
