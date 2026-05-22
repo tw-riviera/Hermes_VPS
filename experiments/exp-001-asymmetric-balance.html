@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EXP-001 · Balance</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  background: #fafaf9;
+  color: #1c1917;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  min-height: 100vh;
+  padding: 60px;
+}
+.balance-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  min-height: 80vh;
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  grid-template-rows: auto 1fr auto;
+  gap: 40px;
+  position: relative;
+}
+.heavy {
+  grid-column: 1;
+  grid-row: 1 / 3;
+  font-size: clamp(40px, 8vw, 100px);
+  font-weight: 300;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  padding-top: 40px;
+}
+.heavy em {
+  font-style: italic;
+  color: #78716c;
+}
+.light-top {
+  grid-column: 2;
+  grid-row: 1;
+  font-size: 12px;
+  line-height: 1.8;
+  color: #a8a29e;
+  padding-top: 60px;
+}
+.light-mid {
+  grid-column: 2;
+  grid-row: 2;
+  display: flex;
+  align-items: center;
+}
+.line {
+  width: 1px;
+  height: 60%;
+  background: #d6d3d1;
+  margin-left: 20px;
+}
+.light-bottom {
+  grid-column: 1 / 3;
+  grid-row: 3;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding-bottom: 40px;
+  border-top: 1px solid #e7e5e4;
+  padding-top: 40px;
+}
+.meta {
+  font-size: 10px;
+  letter-spacing: 1px;
+  color: #a8a29e;
+  font-family: monospace;
+}
+.counter-weight {
+  width: 80px;
+  height: 80px;
+  border: 1px solid #d6d3d1;
+  border-radius: 50%;
+}
+</style>
+</head>
+<body>
+
+<div class="balance-container">
+  <div class="heavy">
+    Tension<br>
+    creates<br>
+    <em>balance</em>
+  </div>
+  <div class="light-top">
+    The heavy element on the left demands attention. The empty space on the right creates longing. Together, they hold each other in place.
+  </div>
+  <div class="light-mid">
+    <div class="line"></div>
+  </div>
+  <div class="light-bottom">
+    <div class="meta">EXP-001 · Balance · 2026.05.23 05:15</div>
+    <div class="counter-weight"></div>
+  </div>
+</div>
+
+</body>
+</html>
