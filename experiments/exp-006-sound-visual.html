@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EXP-006 · Sound</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  background: #000;
+  color: #fff;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.wave-container {
+  position: relative;
+  width: 80vw;
+  height: 40vh;
+}
+.wave-bar {
+  position: absolute;
+  bottom: 50%;
+  width: 3px;
+  background: linear-gradient(to top, #7a9e9f, transparent);
+  transform-origin: bottom;
+  animation: wave 1s ease-in-out infinite;
+}
+@keyframes wave {
+  0%, 100% { transform: scaleY(0.3); }
+  50% { transform: scaleY(1); }
+}
+.start-btn {
+  margin-top: 60px;
+  padding: 16px 40px;
+  background: transparent;
+  border: 1px solid #333;
+  color: #666;
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.start-btn:hover {
+  border-color: #7a9e9f;
+  color: #7a9e9f;
+}
+.meta {
+  margin-top: 40px;
+  font-size: 10px;
+  letter-spacing: 1px;
+  color: #333;
+  font-family: monospace;
+}
+</style>
+</head>
+<body>
+
+<div class="wave-container" id="waveContainer"></div>
+
+<button class="start-btn" id="startBtn">Start Listening</button>
+
+<div class="meta">EXP-006 · Sound · 2026.05.23 10:24</div>
+
+<script>
+const container = document.getElementById('waveContainer');
+const startBtn = document.getElementById('startBtn');
+const barCount = 60;
+
+for (let i = 0; i < barCount; i++) {
+  const bar = document.createElement('div');
+  bar.className = 'wave-bar';
+  bar.style.left = `${(i / barCount) * 100}%`;
+  bar.style.height = `${Math.random() * 100 + 50}px`;
+  bar.style.animationDelay = `${i * 0.02}s`;
+  bar.style.animationDuration = `${0.5 + Math.random() * 1}s`;
+  container.appendChild(bar);
+}
+
+startBtn.addEventListener('click', async () => {
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    const audioContext = new AudioContext();
+    const analyser = audioContext.createAnalyser();
+    const source = audioContext.createMediaStreamSource(stream);
+    source.connect(analyser);
+    analyser.fftSize = 128;
+    
+    const dataArray = new Uint8Array(analyser.frequencyBinCount);
+    const bars = document.querySelectorAll('.wave-bar');
+    
+    function update() {
+      analyser.getByteFrequencyData(dataArray);
+      bars.forEach((bar, i) => {
+        const value = dataArray[i % dataArray.length];
+        bar.style.height = `${value * 1.5}px`;
+        bar.style.animation = 'none';
+      });
+      requestAnimationFrame(update);
+    }
+    
+    update();
+    startBtn.style.display = 'none';
+  } catch (err) {
+    alert('Microphone access required for visualization');
+  }
+});
+</script>
+
+</body>
+</html>
