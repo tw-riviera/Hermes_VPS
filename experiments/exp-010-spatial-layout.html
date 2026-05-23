@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EXP-010 · Spatial</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  background: #0c0a09;
+  color: #fafaf9;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+.spatial-container {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  perspective: 1000px;
+  overflow: hidden;
+}
+.plane {
+  position: absolute;
+  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.plane-1 {
+  top: 10%;
+  left: 5%;
+  width: 40%;
+  height: 60%;
+  background: linear-gradient(135deg, #1c1917, #292524);
+  transform: translateZ(0px);
+  z-index: 1;
+}
+.plane-2 {
+  top: 20%;
+  left: 30%;
+  width: 50%;
+  height: 50%;
+  background: linear-gradient(135deg, #292524, #44403c);
+  transform: translateZ(-100px);
+  z-index: 0;
+  opacity: 0.8;
+}
+.plane-3 {
+  top: 5%;
+  left: 55%;
+  width: 35%;
+  height: 70%;
+  background: linear-gradient(135deg, #1c1917, #0c0a09);
+  border: 1px solid #44403c;
+  transform: translateZ(50px);
+  z-index: 2;
+}
+.plane-content {
+  padding: 40px;
+  font-size: 14px;
+  line-height: 1.8;
+  color: #a8a29e;
+}
+.plane-content h2 {
+  font-size: 28px;
+  font-weight: 300;
+  color: #fafaf9;
+  margin-bottom: 20px;
+  letter-spacing: -0.02em;
+}
+.meta {
+  position: fixed;
+  bottom: 40px;
+  left: 40px;
+  font-family: monospace;
+  font-size: 10px;
+  color: #57534e;
+  letter-spacing: 1px;
+  z-index: 10;
+}
+</style>
+</head>
+<body>
+
+<div class="spatial-container">
+  <div class="plane plane-1">
+    <div class="plane-content">
+      <h2>Foreground</h2>
+      <p>The closest layer to the viewer. It demands attention but reveals nothing without the layers behind it.</p>
+    </div>
+  </div>
+  <div class="plane plane-2">
+    <div class="plane-content">
+      <h2>Depth</h2>
+      <p>The middle ground provides context. It is the space where meaning accumulates and memory settles.</p>
+    </div>
+  </div>
+  <div class="plane plane-3">
+    <div class="plane-content">
+      <h2>Distance</h2>
+      <p>The far layer creates longing. What is partially hidden invites imagination.</p>
+    </div>
+  </div>
+</div>
+
+<div class="meta">EXP-010 · Spatial · 2026.05.23 10:26</div>
+
+<script>
+document.querySelector('.spatial-container').addEventListener('mousemove', (e) => {
+  const x = (e.clientX / window.innerWidth - 0.5) * 2;
+  const y = (e.clientY / window.innerHeight - 0.5) * 2;
+  
+  document.querySelector('.plane-1').style.transform = `translateZ(${x * 30}px) translateX(${x * -20}px)`;
+  document.querySelector('.plane-2').style.transform = `translateZ(${-100 + y * 20}px) translateX(${x * 10}px)`;
+  document.querySelector('.plane-3').style.transform = `translateZ(${50 + x * -15}px) translateY(${y * 15}px)`;
+});
+</script>
+
+</body>
+</html>
