@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EXP-011 · Color</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: repeat(4, 1fr);
+  height: 100vh;
+}
+.color-cell {
+  display: flex;
+  align-items: flex-end;
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.4s ease;
+}
+.color-cell:hover {
+  transform: scale(1.02);
+  z-index: 10;
+}
+.color-cell::after {
+  content: attr(data-hex);
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  font-size: 10px;
+  letter-spacing: 1px;
+  opacity: 0.6;
+  font-family: monospace;
+}
+.color-name {
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}
+.c1 { background: #1a1a2e; color: #e94560; }
+.c2 { background: #16213e; color: #0f3460; }
+.c3 { background: #0f3460; color: #e94560; }
+.c4 { background: #533483; color: #f39422; }
+.c5 { background: #e94560; color: #1a1a2e; }
+.c6 { background: #f39422; color: #533483; }
+.c7 { background: #16c79a; color: #11698e; }
+.c8 { background: #11698e; color: #16c79a; }
+.c9 { background: #f8f1f1; color: #19456b; }
+.c10 { background: #19456b; color: #f8f1f1; }
+.c11 { background: #16c79a; color: #f8f1f1; }
+.c12 { background: #1a1a2e; color: #f39422; }
+.c13 { background: #e94560; color: #f8f1f1; }
+.c14 { background: #f8f1f1; color: #e94560; }
+.c15 { background: #533483; color: #16c79a; }
+.c16 { background: #0f3460; color: #f39422; }
+.c17 { background: #f39422; color: #1a1a2e; }
+.c18 { background: #16213e; color: #16c79a; }
+.c19 { background: #11698e; color: #f8f1f1; }
+.c20 { background: #16c79a; color: #533483; }
+</style>
+</head>
+<body>
+
+<div class="color-cell c1" data-hex="#1A1A2E"><div class="color-name">Deep</div></div>
+<div class="color-cell c2" data-hex="#16213E"><div class="color-name">Night</div></div>
+<div class="color-cell c3" data-hex="#0F3460"><div class="color-name">Ocean</div></div>
+<div class="color-cell c4" data-hex="#533483"><div class="color-name">Mystic</div></div>
+<div class="color-cell c5" data-hex="#E94560"><div class="color-name">Pulse</div></div>
+<div class="color-cell c6" data-hex="#F39422"><div class="color-name">Warmth</div></div>
+<div class="color-cell c7" data-hex="#16C79A"><div class="color-name">Life</div></div>
+<div class="color-cell c8" data-hex="#11698E"><div class="color-name">Depth</div></div>
+<div class="color-cell c9" data-hex="#F8F1F1"><div class="color-name">Void</div></div>
+<div class="color-cell c10" data-hex="#19456B"><div class="color-name">Calm</div></div>
+<div class="color-cell c11" data-hex="#16C79A"><div class="color-name">Grow</div></div>
+<div class="color-cell c12" data-hex="#1A1A2E"><div class="color-name">Dark</div></div>
+<div class="color-cell c13" data-hex="#E94560"><div class="color-name">Beat</div></div>
+<div class="color-cell c14" data-hex="#F8F1F1"><div class="color-name">Light</div></div>
+<div class="color-cell c15" data-hex="#533483"><div class="color-name">Dream</div></div>
+<div class="color-cell c16" data-hex="#0F3460"><div class="color-name">Still</div></div>
+<div class="color-cell c17" data-hex="#F39422"><div class="color-name">Glow</div></div>
+<div class="color-cell c18" data-hex="#16213E"><div class="color-name">Quiet</div></div>
+<div class="color-cell c19" data-hex="#11698E"><div class="color-name">Flow</div></div>
+<div class="color-cell c20" data-hex="#16C79A"><div class="color-name">Breathe</div></div>
+
+<script>
+document.querySelectorAll('.color-cell').forEach(cell => {
+  cell.addEventListener('click', () => {
+    document.body.style.background = cell.style.background;
+  });
+});
+</script>
+
+</body>
+</html>
