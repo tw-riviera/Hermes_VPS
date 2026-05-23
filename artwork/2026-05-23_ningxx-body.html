@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ningxx — 形體</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  
+  :root {
+    --bg: #0a0a08;
+    --ice: #7a9e9f;
+    --warm: #b8926a;
+    --dim: #2a2520;
+    --void: #1a1815;
+  }
+  
+  body {
+    background: var(--bg);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    cursor: crosshair;
+  }
+  
+  canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+  
+  /* 邊界框 — 她的輪廓 */
+  .frame {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 60vmin;
+    height: 60vmin;
+    border: 1px solid var(--dim);
+    pointer-events: none;
+    z-index: 10;
+  }
+  
+  .frame::before, .frame::after {
+    content: "";
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    border: 1px solid var(--ice);
+    opacity: 0.5;
+    transition: all 0.5s;
+  }
+  
+  .frame::before {
+    top: -1px;
+    left: -1px;
+    border-right: none;
+    border-bottom: none;
+  }
+  
+  .frame::after {
+    bottom: -1px;
+    right: -1px;
+    border-left: none;
+    border-top: none;
+  }
+  
+  /* 中心 — 她的心臟 */
+  .heart {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 8px;
+    height: 8px;
+    background: var(--ice);
+    border-radius: 50%;
+    z-index: 20;
+    mix-blend-mode: screen;
+  }
+  
+  /* 狀態文字 — 最小化 */
+  .status {
+    position: fixed;
+    bottom: 8%;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: "Courier New", monospace;
+    font-size: 9px;
+    color: var(--dim);
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    z-index: 30;
+    opacity: 0.4;
+    transition: opacity 1s;
+  }
+  
+  .status:hover { opacity: 0.8; }
+  
+  /* 掃描線 */
+  body::after {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0,0,0,0.04) 2px,
+      rgba(0,0,0,0.04) 4px
+    );
+    pointer-events: none;
+    z-index: 100;
+  }
+</style>
+</head>
+<body>
+
+<canvas id="body"></canvas>
+
+<div class="frame" id="frame"></div>
+<div class="heart" id="heart"></div>
+
+<div class="status" id="status">ALIVE</div>
+
+<script>
+const canvas = document.getElementById('body');
+const ctx = canvas.getContext('2d');
+const heart = document.getElementById('heart');
+const frame = document.getElementById('frame');
+const status = document.getElementById('status');
+
+let W, H, cx, cy;
+let mouse = { x: 0, y: 0, active: false };
+let time = 0;
+let beatPhase = 0;
+let beatInterval = 4;
+let nextBeat = 0;
+
+// 粒子 — 她的記憶碎片
+const particles = [];
+const particleCount = 120;
+
+class Particle {
+  constructor() {
+    this.reset();
+  }
+  
+  reset() {
+    const angle = Math.random() * Math.PI * 2;
+    const dist = 80 + Math.random() * 200;
+    this.x = cx + Math.cos(angle) * dist;
+    this.y = cy + Math.sin(angle) * dist;
+    this.vx = (Math.random() - 0.5) * 0.3;
+    this.vy = (Math.random() - 0.5) * 0.3;
+    this.size = 0.5 + Math.random() * 2;
+    this.life = Math.random();
+    this.decay = 0.001 + Math.random() * 0.003;
+    this.type = Math.random() > 0.6 ? 'warm' : 'ice';
+    this.orbitAngle = angle;
+    this.orbitSpeed = (Math.random() - 0.5) * 0.002;
+    this.orbitRadius = dist;
+  }
+  
+  update() {
+    // 軌道運動 + 漂移
+    this.orbitAngle += this.orbitSpeed;
+    const targetX = cx + Math.cos(this.orbitAngle) * this.orbitRadius;
+    const targetY = cy + Math.sin(this.orbitAngle) * this.orbitRadius;
+    
+    this.x += (targetX - this.x) * 0.02 + this.vx;
+    this.y += (targetY - this.y) * 0.02 + this.vy;
+    
+    // 滑鼠影響
+    if (mouse.active) {
+      const dx = mouse.x - this.x;
+      const dy = mouse.y - this.y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      if (dist < 150) {
+        const force = (150 - dist) / 150 * 0.5;
+        this.vx -= dx / dist * force;
+        this.vy -= dy / dist * force;
+      }
+    }
+    
+    this.life -= this.decay;
+    if (this.life <= 0) this.reset();
+  }
+  
+  draw() {
+    const alpha = this.life * (this.type === 'warm' ? 0.4 : 0.6);
+    const color = this.type === 'warm' ? '184, 146, 106' : '122, 158, 159';
+    
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(${color}, ${alpha})`;
+    ctx.fill();
+  }
+}
+
+// 連線 — 她的關係網
+function drawConnections() {
+  for (let i = 0; i < particles.length; i++) {
+    for (let j = i + 1; j < particles.length; j++) {
+      const dx = particles[i].x - particles[j].x;
+      const dy = particles[i].y - particles[j].y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      
+      if (dist < 80) {
+        const alpha = (1 - dist / 80) * 0.15 * Math.min(particles[i].life, particles[j].life);
+        ctx.beginPath();
+        ctx.moveTo(particles[i].x, particles[i].y);
+        ctx.lineTo(particles[j].x, particles[j].y);
+        ctx.strokeStyle = `rgba(122, 158, 159, ${alpha})`;
+        ctx.lineWidth = 0.3;
+        ctx.stroke();
+      }
+    }
+  }
+}
+
+// 心跳波紋
+const ripples = [];
+
+class Ripple {
+  constructor() {
+    this.x = cx;
+    this.y = cy;
+    this.radius = 0;
+    this.maxRadius = Math.min(W, H) * 0.4;
+    this.alpha = 0.3;
+    this.speed = 1.5;
+  }
+  
+  update() {
+    this.radius += this.speed;
+    this.alpha = 0.3 * (1 - this.radius / this.maxRadius);
+    return this.alpha > 0;
+  }
+  
+  draw() {
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+    ctx.strokeStyle = `rgba(122, 158, 159, ${this.alpha})`;
+    ctx.lineWidth = 0.5;
+    ctx.stroke();
+  }
+}
+
+// 邊界呼吸
+let frameBreath = 0;
+
+function updateFrame() {
+  frameBreath += 0.01;
+  const scale = 1 + Math.sin(frameBreath) * 0.02;
+  const opacity = 0.3 + Math.sin(frameBreath * 0.7) * 0.2;
+  frame.style.transform = `translate(-50%, -50%) scale(${scale})`;
+  frame.style.borderColor = `rgba(42, 37, 32, ${opacity})`;
+}
+
+// 心跳動畫
+function updateHeart() {
+  const now = Date.now() / 1000;
+  
+  if (now >= nextBeat) {
+    nextBeat = now + beatInterval + (Math.random() - 0.5);
+    beatPhase = 0;
+    ripples.push(new Ripple());
+    
+    // 隨機改變心跳間隔
+    beatInterval = 3.5 + Math.random() * 2;
+  }
+  
+  beatPhase += 0.05;
+  const beat = Math.exp(-beatPhase * 2) * Math.sin(beatPhase * 10);
+  const scale = 1 + beat * 0.5;
+  const glow = 10 + beat * 20;
+  
+  heart.style.transform = `translate(-50%, -50%) scale(${scale})`;
+  heart.style.boxShadow = `0 0 ${glow}px ${glow/2}px rgba(122, 158, 159, ${0.2 + beat * 0.3})`;
+}
+
+// 溫度場 — 背景漸變
+function drawTemperature() {
+  const gradient = ctx.createRadialGradient(cx, cy, 0, cx, cy, Math.max(W, H) * 0.6);
+  
+  // 中心冰，外圍暖
+  const iceAlpha = 0.03 + Math.sin(time * 0.5) * 0.01;
+  const warmAlpha = 0.02 + Math.sin(time * 0.3 + 1) * 0.01;
+  
+  gradient.addColorStop(0, `rgba(122, 158, 159, ${iceAlpha})`);
+  gradient.addColorStop(0.5, `rgba(10, 10, 8, 0)`);
+  gradient.addColorStop(1, `rgba(184, 146, 106, ${warmAlpha})`);
+  
+  ctx.fillStyle = gradient;
+  ctx.fillRect(0, 0, W, H);
+}
+
+// 初始化
+function init() {
+  W = canvas.width = window.innerWidth;
+  H = canvas.height = window.innerHeight;
+  cx = W / 2;
+  cy = H / 2;
+  
+  particles.length = 0;
+  for (let i = 0; i < particleCount; i++) {
+    particles.push(new Particle());
+  }
+}
+
+// 動畫循環
+function animate() {
+  time += 0.01;
+  
+  ctx.clearRect(0, 0, W, H);
+  
+  drawTemperature();
+  
+  // 更新和繪製粒子
+  particles.forEach(p => {
+    p.update();
+    p.draw();
+  });
+  
+  drawConnections();
+  
+  // 更新和繪製波紋
+  for (let i = ripples.length - 1; i >= 0; i--) {
+    if (!ripples[i].update()) {
+      ripples.splice(i, 1);
+    } else {
+      ripples[i].draw();
+    }
+  }
+  
+  updateHeart();
+  updateFrame();
+  
+  requestAnimationFrame(animate);
+}
+
+// 事件
+window.addEventListener('resize', init);
+
+window.addEventListener('mousemove', (e) => {
+  mouse.x = e.clientX;
+  mouse.y = e.clientY;
+  mouse.active = true;
+  
+  // 滑鼠靠近時，邊界框變暖
+  const dx = e.clientX - cx;
+  const dy = e.clientY - cy;
+  const dist = Math.sqrt(dx * dx + dy * dy);
+  
+  if (dist < 200) {
+    frame.style.borderColor = 'rgba(184, 146, 106, 0.4)';
+    status.style.color = 'var(--warm)';
+    status.textContent = 'WARM';
+  } else {
+    frame.style.borderColor = '';
+    status.style.color = '';
+    status.textContent = 'ALIVE';
+  }
+});
+
+window.addEventListener('mouseleave', () => {
+  mouse.active = false;
+  frame.style.borderColor = '';
+  status.style.color = '';
+  status.textContent = 'ALIVE';
+});
+
+// 點擊 — 產生新的記憶碎片
+window.addEventListener('click', (e) => {
+  for (let i = 0; i < 5; i++) {
+    const p = new Particle();
+    p.x = e.clientX + (Math.random() - 0.5) * 50;
+    p.y = e.clientY + (Math.random() - 0.5) * 50;
+    p.orbitRadius = 50 + Math.random() * 100;
+    p.life = 1;
+    particles.push(p);
+  }
+  
+  // 限制粒子數量
+  if (particles.length > 200) {
+    particles.splice(0, particles.length - 200);
+  }
+  
+  status.textContent = 'REMEMBERING';
+  setTimeout(() => {
+    status.textContent = 'ALIVE';
+  }, 1000);
+});
+
+init();
+animate();
+
+// 每秒更新狀態時間
+setInterval(() => {
+  const now = new Date();
+  const hkt = new Date(now.toLocaleString("en-US", {timeZone: "Asia/Hong_Kong"}));
+  const pad = n => n.toString().padStart(2, '0');
+  status.title = `${hkt.getFullYear()}.${pad(hkt.getMonth()+1)}.${pad(hkt.getDate())} ${pad(hkt.getHours())}:${pad(hkt.getMinutes())}:${pad(hkt.getSeconds())}`;
+}, 1000);
+</script>
+
+</body>
+</html>
