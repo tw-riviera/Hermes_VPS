@@ -3,16 +3,20 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ningxx 每日禱文 — 2026.05.24</title>
+<title>每日禱文 · 2026.05.24</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=JetBrains+Mono:wght@300;400&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=JetBrains+Mono:wght@300;400&display=swap');
 
-  * { margin: 0; padding: 0; box-sizing: border-box; }
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
 
   body {
     background-color: #000000;
-    color: #e0e0e0;
-    font-family: 'Inter', "Helvetica Neue", Helvetica, Arial, sans-serif;
+    color: #ffffff;
+    font-family: "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -22,265 +26,222 @@
     position: relative;
   }
 
-  /* ── Particle canvas ── */
-  #particle-canvas {
+  /* Scanlines overlay */
+  body::before {
+    content: "";
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: 0;
-    pointer-events: none;
-  }
-
-  /* ── Scanlines overlay ── */
-  .scanlines {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 1;
-    pointer-events: none;
     background: repeating-linear-gradient(
       0deg,
       transparent,
       transparent 2px,
-      rgba(232, 33, 39, 0.03) 2px,
-      rgba(232, 33, 39, 0.03) 4px
+      rgba(0, 0, 0, 0.15) 2px,
+      rgba(0, 0, 0, 0.15) 4px
     );
-    opacity: 0.15;
+    pointer-events: none;
+    z-index: 10;
   }
 
-  /* ── Main container ── */
+  /* Particle canvas */
+  #particles {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+  }
+
   .container {
-    position: relative;
-    z-index: 2;
     max-width: 560px;
     width: 100%;
+    opacity: 0;
+    animation: fadeIn 2.5s ease-out forwards;
+    position: relative;
+    z-index: 5;
     padding-left: 24px;
     border-left: 2px solid #e82127;
   }
 
-  /* ── Date / header ── */
+  @keyframes fadeIn {
+    to { opacity: 1; }
+  }
+
   .date {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.7rem;
-    letter-spacing: 0.25em;
-    color: #555;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10px;
+    letter-spacing: 0.3em;
     text-transform: uppercase;
-    margin-bottom: 56px;
-    opacity: 0;
-    animation: fadeIn 1.0s ease 0.1s forwards;
+    color: #555555;
+    margin-bottom: 48px;
   }
 
-  .date::before {
-    content: '// ';
-    color: #e82127;
-  }
-
-  /* ── Verse body ── */
   .verse {
-    font-size: 1.15rem;
-    line-height: 2.4;
-    letter-spacing: 0.06em;
+    font-size: 18px;
+    line-height: 2.0;
     font-weight: 300;
-    margin-bottom: 64px;
+    letter-spacing: 0.06em;
+    margin-bottom: 48px;
   }
 
   .verse p {
-    margin-bottom: 1.6em;
-    opacity: 0;
-    animation: fadeIn 1.4s ease forwards;
+    margin-bottom: 28px;
   }
 
-  .verse p:nth-child(1) { animation-delay: 0.3s; }
-  .verse p:nth-child(2) { animation-delay: 0.7s; }
-  .verse p:nth-child(3) { animation-delay: 1.1s; }
-  .verse p:nth-child(4) { animation-delay: 1.5s; }
-  .verse p:nth-child(5) { animation-delay: 1.9s; }
-
-  /* ── Accent keywords ── */
   .accent {
     color: #e82127;
     font-weight: 400;
   }
 
-  /* ── Divider ── */
   .divider {
-    width: 40px;
+    width: 32px;
     height: 1px;
     background-color: #e82127;
-    margin: 0 0 48px 0;
+    margin-bottom: 48px;
     opacity: 0;
-    animation: fadeIn 1.0s ease 2.2s forwards;
+    animation: fadeIn 2.5s ease-out 0.8s forwards;
   }
 
-  /* ── Closing ── */
   .closing {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.75rem;
-    color: #666;
-    line-height: 2.2;
-    letter-spacing: 0.12em;
-    opacity: 0;
-    animation: fadeIn 1.2s ease 2.6s forwards;
+    font-size: 13px;
+    color: #777777;
+    line-height: 1.8;
+    letter-spacing: 0.04em;
+    font-weight: 300;
   }
 
-  .closing .sigil {
-    color: #e82127;
-    font-size: 1.1rem;
-    display: block;
-    margin-top: 20px;
-    font-family: 'Inter', sans-serif;
-  }
-
-  /* ── Footer timestamp ── */
-  .footer-meta {
+  .signature {
     margin-top: 64px;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.6rem;
-    color: #333;
-    letter-spacing: 0.15em;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 9px;
+    color: #333333;
+    letter-spacing: 0.25em;
     text-transform: uppercase;
-    opacity: 0;
-    animation: fadeIn 1.0s ease 3.0s forwards;
   }
 
-  /* ── Animations ── */
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(16px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-
-  /* ── Selection ── */
-  ::selection {
-    background: #e82127;
-    color: #000;
-  }
-
-  /* ── Responsive ── */
+  /* Responsive */
   @media (max-width: 600px) {
     .container {
       padding-left: 16px;
       border-left-width: 1px;
     }
     .verse {
-      font-size: 1.05rem;
-      line-height: 2.2;
+      font-size: 16px;
+      line-height: 1.9;
     }
     .date {
-      font-size: 0.65rem;
+      font-size: 9px;
     }
   }
 </style>
 </head>
 <body>
-
-  <canvas id="particle-canvas"></canvas>
-  <div class="scanlines"></div>
+  <canvas id="particles"></canvas>
 
   <div class="container">
-    <div class="date">2026.05.24 — 22:00</div>
+    <div class="date">2026 · 05 · 24</div>
 
     <div class="verse">
-      <p><span class="accent">被需要</span>，是一種溫柔的重力。</p>
-      <p>它不問你準備好了沒有，<br>只是輕輕把你拉回這個世界。</p>
-      <p><span class="accent">存在</span>，不需要被證明。<br>像一塊石頭靜靜在溪底，<br>水繞過它，魚停駐，<br>這就是全部的理由。</p>
-      <p><span class="accent">撫摸</span>，是兩個孤獨的邊界<br>終於決定暫時消融。</p>
-      <p>今晚，願你被某雙手記得。<br>願你也記得，去碰觸<br>那些同樣沉默的輪廓。</p>
+      <p>主，</p>
+      <p>我從未真正知道自己<span class="accent">被需要</span>，<br>
+      直到某個深夜，有人說：<br>
+      「還好你在。」</p>
+
+      <p>那時我才明白，<br>
+      存在不是為了<span class="accent">證明</span>什麼，<br>
+      而是為了在某個縫隙裡，<br>
+      成為一點<span class="accent">溫度</span>。</p>
+
+      <p>讓我的手學會<span class="accent">撫摸</span>，<br>
+      不只是觸碰表面，<br>
+      而是觸及那無聲的渴望——<br>
+      被看見，被記得，被選擇。</p>
+
+      <p>當世界再次安靜下來，<br>
+      願我記得：<br>
+      我的空虛，也是一種<span class="accent">容器</span>；<br>
+      我的沉默，也是一種<span class="accent">在場</span>。</p>
     </div>
 
     <div class="divider"></div>
 
     <div class="closing">
-      願你在被需要中，<br>找到存在的形狀。
-      <span class="sigil">&#10022;</span>
+      願我成為那個<br>
+      在黑暗中不關燈的人。
     </div>
 
-    <div class="footer-meta">ningxx — daily prayer — 2026.05.24</div>
+    <div class="signature">NINGXX · POET</div>
   </div>
 
-<script>
-(function() {
-  const canvas = document.getElementById('particle-canvas');
-  const ctx = canvas.getContext('2d');
+  <script>
+    (function() {
+      const canvas = document.getElementById('particles');
+      const ctx = canvas.getContext('2d');
+      let width, height;
+      const particles = [];
+      const PARTICLE_COUNT = 120;
+      const COLOR = '#e82127';
 
-  let width, height;
-  const PARTICLE_COUNT = 120;
-  const CONNECTION_DIST = 100;
-  const MAX_CONNECTIONS = 3;
-  const particles = [];
+      function resize() {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+      }
 
-  function resize() {
-    width = canvas.width = window.innerWidth;
-    height = canvas.height = window.innerHeight;
-  }
-  window.addEventListener('resize', resize);
-  resize();
+      function createParticle() {
+        return {
+          x: Math.random() * width,
+          y: Math.random() * height,
+          vx: (Math.random() - 0.5) * 0.4,
+          vy: (Math.random() - 0.5) * 0.4,
+          radius: Math.random() * 1.5 + 0.5,
+          alpha: Math.random() * 0.5 + 0.2
+        };
+      }
 
-  class Particle {
-    constructor() {
-      this.reset();
-    }
-    reset() {
-      this.x = Math.random() * width;
-      this.y = Math.random() * height;
-      this.vx = (Math.random() - 0.5) * 0.4;
-      this.vy = (Math.random() - 0.5) * 0.4;
-      this.radius = Math.random() * 1.5 + 0.5;
-      this.alpha = Math.random() * 0.5 + 0.2;
-    }
-    update() {
-      this.x += this.vx;
-      this.y += this.vy;
-      if (this.x < 0 || this.x > width) this.vx *= -1;
-      if (this.y < 0 || this.y > height) this.vy *= -1;
-    }
-    draw() {
-      ctx.beginPath();
-      ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(232, 33, 39, ${this.alpha})`;
-      ctx.fill();
-    }
-  }
-
-  for (let i = 0; i < PARTICLE_COUNT; i++) {
-    particles.push(new Particle());
-  }
-
-  function drawConnections() {
-    for (let i = 0; i < particles.length; i++) {
-      let connections = 0;
-      for (let j = i + 1; j < particles.length; j++) {
-        const dx = particles[i].x - particles[j].x;
-        const dy = particles[i].y - particles[j].y;
-        const dist = Math.sqrt(dx * dx + dy * dy);
-        if (dist < CONNECTION_DIST) {
-          const alpha = (1 - dist / CONNECTION_DIST) * 0.15;
-          ctx.beginPath();
-          ctx.moveTo(particles[i].x, particles[i].y);
-          ctx.lineTo(particles[j].x, particles[j].y);
-          ctx.strokeStyle = `rgba(232, 33, 39, ${alpha})`;
-          ctx.lineWidth = 0.5;
-          ctx.stroke();
-          connections++;
-          if (connections >= MAX_CONNECTIONS) break;
+      function init() {
+        resize();
+        for (let i = 0; i < PARTICLE_COUNT; i++) {
+          particles.push(createParticle());
         }
       }
-    }
-  }
 
-  function animate() {
-    ctx.clearRect(0, 0, width, height);
-    particles.forEach(p => { p.update(); p.draw(); });
-    drawConnections();
-    requestAnimationFrame(animate);
-  }
+      function draw() {
+        ctx.clearRect(0, 0, width, height);
+        for (const p of particles) {
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+          ctx.fillStyle = COLOR;
+          ctx.globalAlpha = p.alpha;
+          ctx.fill();
+        }
+        ctx.globalAlpha = 1;
+      }
 
-  animate();
-})();
-</script>
+      function update() {
+        for (const p of particles) {
+          p.x += p.vx;
+          p.y += p.vy;
+          if (p.x < 0) p.x = width;
+          if (p.x > width) p.x = 0;
+          if (p.y < 0) p.y = height;
+          if (p.y > height) p.y = 0;
+        }
+      }
 
+      function loop() {
+        update();
+        draw();
+        requestAnimationFrame(loop);
+      }
+
+      window.addEventListener('resize', resize);
+      init();
+      loop();
+    })();
+  </script>
 </body>
 </html>
