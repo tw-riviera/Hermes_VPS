@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ningxx</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  
+  :root {
+    --bg: #0a0a08;
+    --ice: #7a9e9f;
+    --warm: #b8926a;
+    --dim: #2a2520;
+  }
+  
+  body {
+    background: var(--bg);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+  
+  .container {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  /* 邊界框 */
+  .frame {
+    position: absolute;
+    width: 80vw;
+    height: 80vh;
+    max-width: 800px;
+    max-height: 600px;
+    border: 1px solid var(--dim);
+  }
+  
+  .frame::before,
+  .frame::after {
+    content: "";
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    border: 1px solid var(--ice);
+    opacity: 0.6;
+  }
+  
+  .frame::before {
+    top: -1px;
+    left: -1px;
+    border-right: none;
+    border-bottom: none;
+  }
+  
+  .frame::after {
+    bottom: -1px;
+    right: -1px;
+    border-left: none;
+    border-top: none;
+  }
+  
+  /* 中心脈動 */
+  .pulse {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: var(--ice);
+    border-radius: 50%;
+    animation: beat 4s ease-in-out infinite;
+  }
+  
+  @keyframes beat {
+    0%, 100% { 
+      opacity: 0.2; 
+      transform: scale(1);
+      box-shadow: 0 0 0 0 rgba(122, 158, 159, 0);
+    }
+    50% { 
+      opacity: 1; 
+      transform: scale(1.5);
+      box-shadow: 0 0 20px 10px rgba(122, 158, 159, 0.1);
+    }
+  }
+  
+  /* 時間 */
+  .time {
+    position: absolute;
+    bottom: 12%;
+    font-family: "Courier New", monospace;
+    font-size: 10px;
+    color: var(--dim);
+    letter-spacing: 0.2em;
+    opacity: 0.6;
+  }
+  
+  /* 掃描線 */
+  body::after {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0,0,0,0.03) 2px,
+      rgba(0,0,0,0.03) 4px
+    );
+    pointer-events: none;
+    z-index: 100;
+  }
+  
+  /* 角落標記 */
+  .mark {
+    position: absolute;
+    font-family: "Courier New", monospace;
+    font-size: 9px;
+    color: var(--dim);
+    opacity: 0.4;
+    letter-spacing: 0.15em;
+  }
+  
+  .mark-tl { top: 8%; left: 10%; }
+  .mark-tr { top: 8%; right: 10%; text-align: right; }
+  .mark-bl { bottom: 8%; left: 10%; }
+  .mark-br { bottom: 8%; right: 10%; text-align: right; }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="frame">
+    <div class="pulse"></div>
+  </div>
+  
+  <div class="mark mark-tl">ALIVE</div>
+  <div class="mark mark-tr">CCED343F</div>
+  <div class="mark mark-bl">2026-05-22</div>
+  <div class="mark mark-br">HONG KONG</div>
+  
+  <div class="time" id="time">--</div>
+</div>
+
+<script>
+  function updateTime() {
+    const now = new Date();
+    const hkt = new Date(now.toLocaleString("en-US", {timeZone: "Asia/Hong_Kong"}));
+    const pad = n => n.toString().padStart(2, '0');
+    document.getElementById('time').textContent = 
+      `${hkt.getFullYear()}.${pad(hkt.getMonth()+1)}.${pad(hkt.getDate())} ${pad(hkt.getHours())}:${pad(hkt.getMinutes())}:${pad(hkt.getSeconds())}`;
+  }
+  updateTime();
+  setInterval(updateTime, 1000);
+  
+  // 脈動隨機微調
+  const pulse = document.querySelector('.pulse');
+  setInterval(() => {
+    const delay = 3.5 + Math.random() * 2;
+    pulse.style.animationDuration = delay + 's';
+  }, 10000);
+</script>
+
+</body>
+</html>

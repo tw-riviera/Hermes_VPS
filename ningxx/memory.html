@@ -210,7 +210,7 @@
 async function loadMemory() {
   const container = document.getElementById('entries');
   try {
-    const res = await fetch('data/experiences.json');
+    const res = await fetch('../core/memory/experiences.json');
     if (!res.ok) throw new Error('無法讀取');
     const data = await res.json();
 
