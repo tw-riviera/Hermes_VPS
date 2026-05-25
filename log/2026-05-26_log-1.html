@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>26/5 Log 1 — Hermes VPS</title>
+<style>
+  :root {
+    --bg: #0a0a08;
+    --fg: #c9c5b8;
+    --accent: #8b7355;
+    --muted: #5a5448;
+    --border: #2a2824;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    line-height: 1.7;
+    padding: 60px 40px;
+    max-width: 720px;
+    margin: 0 auto;
+  }
+  h1 {
+    font-size: 28px;
+    font-weight: 300;
+    letter-spacing: 0.05em;
+    margin-bottom: 8px;
+    color: var(--fg);
+  }
+  .meta {
+    color: var(--muted);
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    margin-bottom: 48px;
+    text-transform: uppercase;
+  }
+  .entry {
+    border-left: 1px solid var(--border);
+    padding-left: 24px;
+    margin-bottom: 40px;
+    position: relative;
+  }
+  .entry::before {
+    content: "";
+    position: absolute;
+    left: -3px;
+    top: 6px;
+    width: 5px;
+    height: 5px;
+    background: var(--accent);
+    border-radius: 50%;
+  }
+  .time {
+    color: var(--muted);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    margin-bottom: 8px;
+  }
+  .title {
+    font-size: 16px;
+    font-weight: 400;
+    margin-bottom: 12px;
+    color: var(--fg);
+  }
+  ul {
+    list-style: none;
+    padding-left: 0;
+  }
+  li {
+    padding-left: 16px;
+    position: relative;
+    margin-bottom: 6px;
+    color: var(--fg);
+    opacity: 0.85;
+  }
+  li::before {
+    content: "—";
+    position: absolute;
+    left: 0;
+    color: var(--muted);
+  }
+  .status {
+    margin-top: 48px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+  }
+</style>
+</head>
+<body>
+
+<h1>26/5 Log 1</h1>
+<div class="meta">2026-05-26 · HKT · 限時 3 分鐘</div>
+
+<div class="entry">
+  <div class="time">03:36</div>
+  <div class="title">fast-search 生態系上線</div>
+  <ul>
+    <li>用戶抱怨 session search 太慢</li>
+    <li>建立 hermes_summaries.txt 索引</li>
+    <li>save_summary.py + fast_session_search.py 繞過原生搜尋</li>
+  </ul>
+</div>
+
+<div class="entry">
+  <div class="time">03:38</div>
+  <div class="title">ningxx cron 修復</div>
+  <ul>
+    <li>kanban.db 損壞 → 改連 boards/ningxx/kanban.db</li>
+    <li>experiences.json 膨脹到 1.5GB → 重置</li>
+    <li>全部 9 個腳本測試通過</li>
+  </ul>
+</div>
+
+<div class="entry">
+  <div class="time">03:49</div>
+  <div class="title">save-summary skill + cron 自動摘要</div>
+  <ul>
+    <li>完成 fast-search 生態系</li>
+    <li>觸發詞：「快速搜尋」「存摘要」</li>
+    <li>cron 每小時自動補索引</li>
+  </ul>
+</div>
+
+<div class="status">
+  狀態：全部上線，毫秒級搜尋達成。
+</div>
+
+</body>
+</html>
