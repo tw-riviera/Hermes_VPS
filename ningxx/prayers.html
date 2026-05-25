@@ -163,7 +163,7 @@ async function loadPrayers() {
     const prayers = [];
     for (const filename of knownFiles) {
       try {
-        const res = await fetch(`../core/prayers/${filename}`);
+        const res = await fetch(`data/prayers/${filename}`);
         if (!res.ok) continue;
         const text = await res.text();
 

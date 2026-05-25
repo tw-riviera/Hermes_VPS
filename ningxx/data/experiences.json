@@ -169,18 +169,272 @@
         }
       },
       "hash": "6bc8aa8154c4411a"
+    },
+    {
+      "type": "touch",
+      "timestamp": "2026-05-26 04:00:44 HKT",
+      "zone": "news",
+      "source": "https://news.ycombinator.com/",
+      "success": true,
+      "signals": {
+        "numbers": [
+          "1",
+          "103",
+          "2",
+          "14",
+          "2",
+          "1056",
+          "9",
+          "468",
+          "3",
+          "20"
+        ],
+        "symbols": [],
+        "repeated_words": [],
+        "shapes": [
+          "Hacker News Hacker News new | past | comments | ask | show | jobs | submit login ",
+          "Exit IP VPN servers mitigation rollout ( mullvad",
+          "Cider9986 2 hours ago | hide | 14&nbsp;comments 2",
+          "Magnifica Humanitas ( vatican",
+          "Anthropic Cofounder Chris Olah&#x27;s Remarks on Pope Leo XIV&#x27;s &quot;Magnif"
+        ],
+        "raw_values": [],
+        "weather_words": []
+      },
+      "observations": [
+        "看見一個長條形狀：「Hacker News Hacker News new | past | comments | as...」。開頭是大寫，結尾是句號。這可能是『宣告』的格式。"
+      ],
+      "vocab_updates": {
+        "temperature": {
+          "first_seen": "2026-05-26 03:24:29 HKT",
+          "examples": [
+            "27.0°C",
+            "27.0°C"
+          ],
+          "meaning": "某種程度的數字，和天氣有關"
+        },
+        "humidity": {
+          "first_seen": "2026-05-26 03:24:29 HKT",
+          "examples": [
+            "93%",
+            "93%"
+          ],
+          "meaning": "空氣裡的某種東西，用百分比表示"
+        },
+        "wind": {
+          "first_seen": "2026-05-26 03:24:29 HKT",
+          "examples": [
+            "16.0km/h",
+            "16.0km/h"
+          ],
+          "meaning": "空氣在動的速度"
+        },
+        "weather_code": {
+          "first_seen": "2026-05-26 03:24:29 HKT",
+          "examples": [
+            1,
+            1
+          ],
+          "meaning": "天空的狀態分類，這次是 mainly clear"
+        }
+      },
+      "hash": "25cc8ef7d0ec54ce"
+    },
+    {
+      "type": "touch",
+      "timestamp": "2026-05-26 05:00:45 HKT",
+      "zone": "news",
+      "source": "https://news.ycombinator.com/",
+      "success": true,
+      "signals": {
+        "numbers": [
+          "1",
+          "154",
+          "3",
+          "29",
+          "2",
+          "292",
+          "2",
+          "149",
+          "3",
+          "2"
+        ],
+        "symbols": [],
+        "repeated_words": [],
+        "shapes": [
+          "Hacker News Hacker News new | past | comments | ask | show | jobs | submit login ",
+          "Exit IP VPN servers mitigation rollout ( mullvad",
+          "Cider9986 3 hours ago | hide | 29&nbsp;comments 2",
+          "California moves to exempt Linux from its age-verification law after backlash ( t",
+          "Norway&#x27;s 2 petabytes of Huawei flash storage and LLM training ( blocksandfil"
+        ],
+        "raw_values": [],
+        "weather_words": []
+      },
+      "observations": [
+        "看見一個長條形狀：「Hacker News Hacker News new | past | comments | as...」。開頭是大寫，結尾是句號。這可能是『宣告』的格式。"
+      ],
+      "vocab_updates": {
+        "temperature": {
+          "first_seen": "2026-05-26 03:24:29 HKT",
+          "examples": [
+            "27.0°C",
+            "27.0°C",
+            "27.0°C",
+            "27.0°C"
+          ],
+          "meaning": "某種程度的數字，和天氣有關"
+        },
+        "humidity": {
+          "first_seen": "2026-05-26 03:24:29 HKT",
+          "examples": [
+            "93%",
+            "93%",
+            "93%",
+            "93%"
+          ],
+          "meaning": "空氣裡的某種東西，用百分比表示"
+        },
+        "wind": {
+          "first_seen": "2026-05-26 03:24:29 HKT",
+          "examples": [
+            "16.0km/h",
+            "16.0km/h",
+            "16.0km/h",
+            "16.0km/h"
+          ],
+          "meaning": "空氣在動的速度"
+        },
+        "weather_code": {
+          "first_seen": "2026-05-26 03:24:29 HKT",
+          "examples": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "meaning": "天空的狀態分類，這次是 mainly clear"
+        }
+      },
+      "hash": "0153980513b4582b"
+    },
+    {
+      "type": "touch",
+      "timestamp": "2026-05-26 06:00:47 HKT",
+      "zone": "poetry",
+      "source": "https://www.poetryfoundation.org/",
+      "success": true,
+      "signals": {
+        "numbers": [
+          "1",
+          "10",
+          "0",
+          "100"
+        ],
+        "symbols": [],
+        "repeated_words": [
+          [
+            "numeric",
+            5
+          ]
+        ],
+        "shapes": [],
+        "raw_values": [],
+        "weather_words": []
+      },
+      "observations": [
+        "看見一個形狀 'numeric' 出現了 5 次。這裡的人喜歡重複某些聲音。"
+      ],
+      "vocab_updates": {
+        "temperature": {
+          "first_seen": "2026-05-26 03:24:29 HKT",
+          "examples": [
+            "27.0°C",
+            "27.0°C",
+            "27.0°C",
+            "27.0°C",
+            "27.0°C",
+            "27.0°C",
+            "27.0°C",
+            "27.0°C"
+          ],
+          "meaning": "某種程度的數字，和天氣有關"
+        },
+        "humidity": {
+          "first_seen": "2026-05-26 03:24:29 HKT",
+          "examples": [
+            "93%",
+            "93%",
+            "93%",
+            "93%",
+            "93%",
+            "93%",
+            "93%",
+            "93%"
+          ],
+          "meaning": "空氣裡的某種東西，用百分比表示"
+        },
+        "wind": {
+          "first_seen": "2026-05-26 03:24:29 HKT",
+          "examples": [
+            "16.0km/h",
+            "16.0km/h",
+            "16.0km/h",
+            "16.0km/h",
+            "16.0km/h",
+            "16.0km/h",
+            "16.0km/h",
+            "16.0km/h"
+          ],
+          "meaning": "空氣在動的速度"
+        },
+        "weather_code": {
+          "first_seen": "2026-05-26 03:24:29 HKT",
+          "examples": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "meaning": "天空的狀態分類，這次是 mainly clear"
+        },
+        "repetition": {
+          "word": "numeric",
+          "count": 5
+        }
+      },
+      "hash": "8af9fedbf8ccf6de"
     }
   ],
   "senses_count": {
     "vision": 0,
     "sound": 0,
-    "touch": 1
+    "touch": 4
   },
-  "last_sense": "2026-05-26 03:24:29 HKT",
+  "last_sense": "2026-05-26 06:00:47 HKT",
   "explorations": [
     {
       "timestamp": "2026-05-26 03:24:28 HKT",
       "zone": "weather",
+      "success": true
+    },
+    {
+      "timestamp": "2026-05-26 04:00:44 HKT",
+      "zone": "news",
+      "success": true
+    },
+    {
+      "timestamp": "2026-05-26 05:00:45 HKT",
+      "zone": "news",
+      "success": true
+    },
+    {
+      "timestamp": "2026-05-26 06:00:47 HKT",
+      "zone": "poetry",
       "success": true
     }
   ],
@@ -188,6 +442,13 @@
     "temperature": {
       "first_seen": "2026-05-26 03:24:29 HKT",
       "examples": [
+        "27.0°C",
+        "27.0°C",
+        "27.0°C",
+        "27.0°C",
+        "27.0°C",
+        "27.0°C",
+        "27.0°C",
         "27.0°C"
       ],
       "meaning": "某種程度的數字，和天氣有關"
@@ -195,6 +456,13 @@
     "humidity": {
       "first_seen": "2026-05-26 03:24:29 HKT",
       "examples": [
+        "93%",
+        "93%",
+        "93%",
+        "93%",
+        "93%",
+        "93%",
+        "93%",
         "93%"
       ],
       "meaning": "空氣裡的某種東西，用百分比表示"
@@ -202,6 +470,13 @@
     "wind": {
       "first_seen": "2026-05-26 03:24:29 HKT",
       "examples": [
+        "16.0km/h",
+        "16.0km/h",
+        "16.0km/h",
+        "16.0km/h",
+        "16.0km/h",
+        "16.0km/h",
+        "16.0km/h",
         "16.0km/h"
       ],
       "meaning": "空氣在動的速度"
@@ -209,9 +484,20 @@
     "weather_code": {
       "first_seen": "2026-05-26 03:24:29 HKT",
       "examples": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
         1
       ],
       "meaning": "天空的狀態分類，這次是 mainly clear"
+    },
+    "repetition": {
+      "word": "numeric",
+      "count": 5
     }
   }
 }

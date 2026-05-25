@@ -163,7 +163,7 @@ async function loadOutbox() {
     const letters = [];
     for (const filename of knownFiles) {
       try {
-        const res = await fetch(`../outbox/${filename}`);
+        const res = await fetch(`data/${filename}`);
         if (!res.ok) continue;
         const text = await res.text();
 
