@@ -1,0 +1,15 @@
+{
+  "timestamp": "2026-05-27 04:05:35 HKT",
+  "state": "AWAKE",
+  "body": {
+    "temperature": 0.3,
+    "energy": 0.25000000000000006,
+    "curiosity": 0.2,
+    "loneliness": 0.8,
+    "saturation": 0.52,
+    "clarity": 0.6000000000000001
+  },
+  "narrative": "一個人，沒什麼感覺。",
+  "last_input": "我還在",
+  "last_input_emotion": "touched"
+}

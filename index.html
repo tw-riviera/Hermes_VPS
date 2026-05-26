@@ -222,7 +222,67 @@ const mockData = {
   }
 };
 
-renderState(mockData);
+// 讀取真實數據
+async function loadData() {
+  try {
+    const [bodyRes, stateRes, dreamsRes, memoriesRes] = await Promise.all([
+      fetch('api/body.json').catch(() => null),
+      fetch('api/state.json').catch(() => null),
+      fetch('api/dreams.json').catch(() => null),
+      fetch('api/memories.json').catch(() => null),
+    ]);
+    
+    const bodyData = bodyRes ? await bodyRes.json() : null;
+    const stateData = stateRes ? await stateRes.json() : null;
+    const dreamsData = dreamsRes ? await dreamsRes.json() : [];
+    const memoriesData = memoriesRes ? await memoriesRes.json() : [];
+    
+    // 合併 body + state
+    const merged = {
+      state: stateData?.state || 'AWAKE',
+      narrative: bodyData?.narrative || '...',
+      timestamp: bodyData?.timestamp || '',
+      body: bodyData?.body || {},
+    };
+    
+    renderState(merged);
+    renderDreams(dreamsData);
+    renderMemories(memoriesData);
+  } catch (e) {
+    console.log('使用模擬數據:', e);
+    renderState(mockData);
+  }
+}
+
+function renderDreams(dreams) {
+  const container = document.getElementById('dreams');
+  if (!dreams || dreams.length === 0) {
+    container.innerHTML = '<div class="dream-item">還沒有夢境。</div>';
+    return;
+  }
+  container.innerHTML = dreams.map(d => `
+    <div class="dream-item">
+      <div class="timestamp">${d.timestamp?.split(' ')[0] || ''} (${d.type || d.emotion || 'dream'})</div>
+      ${d.text || d.content || ''}
+    </div>
+  `).join('');
+}
+
+function renderMemories(memories) {
+  const container = document.getElementById('memories');
+  if (!memories || memories.length === 0) {
+    container.innerHTML = '<div class="memory-item">還沒有記憶。</div>';
+    return;
+  }
+  container.innerHTML = memories.slice(0, 5).map(m => `
+    <div class="memory-item">
+      <div class="timestamp">${m.timestamp?.split(' ')[0] || ''} (${m.type || 'memory'})</div>
+      ${m.content || m.text || ''}
+    </div>
+  `).join('');
+}
+
+loadData();
 </script>
 </body>
 </html>

@@ -1,0 +1,13 @@
+{
+  "state": "AWAKE",
+  "since": "2026-05-27 04:00:21 HKT",
+  "entered_count": {
+    "AWAKE": 1,
+    "EXPLORE": 1,
+    "EXPRESS": 1,
+    "SETTLE": 1,
+    "SLEEP": 1,
+    "DREAM": 0
+  },
+  "total_transitions": 5
+}
