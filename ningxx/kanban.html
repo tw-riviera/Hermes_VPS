@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ningxx Kanban</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #0a0a08;
+    color: #c4b8a8;
+    font-family: "SF Mono", "Helvetica Neue", monospace;
+    padding: 40px;
+    line-height: 1.6;
+  }
+  h1 {
+    font-size: 14px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #8a7e6e;
+    margin-bottom: 8px;
+  }
+  .subtitle {
+    font-size: 11px;
+    color: #5a5045;
+    margin-bottom: 40px;
+  }
+  .board {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+  }
+  .column {
+    background: #11110e;
+    border: 1px solid #1c1c18;
+    padding: 16px;
+  }
+  .col-header {
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #6a6055;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #1c1c18;
+    margin-bottom: 16px;
+    display: flex;
+    justify-content: space-between;
+  }
+  .col-count {
+    color: #8a7e6e;
+  }
+  .task {
+    background: #151512;
+    border-left: 2px solid #2a2a24;
+    padding: 12px;
+    margin-bottom: 12px;
+    font-size: 12px;
+    transition: border-color 0.2s;
+  }
+  .task:hover { border-left-color: #8a7e6e; }
+  .task-title {
+    color: #c4b8a8;
+    margin-bottom: 6px;
+  }
+  .task-meta {
+    font-size: 10px;
+    color: #5a5045;
+    display: flex;
+    gap: 12px;
+  }
+  .assignee {
+    color: #7a7060;
+  }
+  .status-done { border-left-color: #3a3a32; }
+  .status-todo { border-left-color: #5a5045; }
+  .status-doing { border-left-color: #8a7e6e; }
+  .status-blocked { border-left-color: #5a3020; }
+  .footer {
+    margin-top: 40px;
+    font-size: 10px;
+    color: #3a3530;
+    text-align: right;
+  }
+</style>
+</head>
+<body>
+<h1>ningxx / Kanban</h1>
+<div class="subtitle">2026-05-27 01:02 HKT</div>
+<div class="board">
+<div class="column">
+<div class="col-header">To Do<span class="col-count">1</span></div>
+<div class="task status-todo">
+<div class="task-title">[2026-05-26] 每日報告整合</div>
+<div class="task-meta">
+<span class="assignee">ningxx-designer</span>
+<span>05-26</span>
+</div>
+</div>
+</div>
+<div class="column">
+<div class="col-header">Doing<span class="col-count">0</span></div>
+</div>
+<div class="column">
+<div class="col-header">Blocked<span class="col-count">2</span></div>
+<div class="task status-blocked">
+<div class="task-title">[2026-05-26] 感知引擎更新</div>
+<div class="task-meta">
+<span class="assignee">ningxx-poet</span>
+<span>05-26</span>
+</div>
+</div>
+<div class="task status-blocked">
+<div class="task-title">[2026-05-24] 每日報告整合</div>
+<div class="task-meta">
+<span class="assignee">ningxx-designer</span>
+<span>05-24</span>
+</div>
+</div>
+</div>
+<div class="column">
+<div class="col-header">Done<span class="col-count">39</span></div>
+<div class="task status-done">
+<div class="task-title">[2026-05-26] 每日禱文</div>
+<div class="task-meta">
+<span class="assignee">ningxx-poet</span>
+<span>05-26</span>
+</div>
+</div>
+<div class="task status-done">
+<div class="task-title">[2026-05-26] 晚間反思</div>
+<div class="task-meta">
+<span class="assignee">ningxx-poet</span>
+<span>05-26</span>
+</div>
+</div>
+<div class="task status-done">
+<div class="task-title">[2026-05-26] 設計視覺排版</div>
+<div class="task-meta">
+<span class="assignee">ningxx-designer</span>
+<span>05-26</span>
+</div>
+</div>
+<div class="task status-done">
+<div class="task-title">[2026-05-26] Deploy 到 GitHub</div>
+<div class="task-meta">
+<span class="assignee">ningxx-deployer</span>
+<span>05-26</span>
+</div>
+</div>
+<div class="task status-done">
+<div class="task-title">[2026-05-26] 每日禱文</div>
+<div class="task-meta">
+<span class="assignee">ningxx-poet</span>
+<span>05-26</span>
+</div>
+</div>
+<div class="task status-done">
+<div class="task-title">[2026-05-26] 晚間反思</div>
+<div class="task-meta">
+<span class="assignee">ningxx-poet</span>
+<span>05-26</span>
+</div>
+</div>
+<div class="task status-done">
+<div class="task-title">[2026-05-26] 感知引擎更新</div>
+<div class="task-meta">
+<span class="assignee">ningxx-poet</span>
+<span>05-26</span>
+</div>
+</div>
+<div class="task status-done">
+<div class="task-title">[2026-05-26] 設計視覺排版</div>
+<div class="task-meta">
+<span class="assignee">ningxx-designer</span>
+<span>05-26</span>
+</div>
+</div>
+<div class="task status-done">
+<div class="task-title">[2026-05-26] Deploy 到 GitHub</div>
+<div class="task-meta">
+<span class="assignee">ningxx-deployer</span>
+<span>05-26</span>
+</div>
+</div>
+<div class="task status-done">
+<div class="task-title">[2026-05-26] 每日報告整合</div>
+<div class="task-meta">
+<span class="assignee">ningxx-designer</span>
+<span>05-26</span>
+</div>
+</div>
+<div class="task status-done">
+<div class="task-title">[2026-05-26] 每日禱文</div>
+<div class="task-meta">
+<span class="assignee">ningxx-poet</span>
+<span>05-26</span>
+</div>
+</div>
+<div class="task status-done">
+<div class="task-title">[2026-05-26] 晚間反思</div>
+<div class="task-meta">
+<span class="assignee">ningxx-poet</span>
+<span>05-26</span>
+</div>
+</div>
+<div class="task status-done">
+<div class="task-title">[2026-05-26] 感知引擎更新</div>
+<div class="task-meta">
+<span class="assignee">ningxx-poet</span>
+<span>05-26</span>
+</div>
+</div>
+<div class="task status-done">
+<div class="task-title">[2026-05-26] 設計視覺排版</div>
+<div class="task-meta">
+<span class="assignee">ningxx-designer</span>
+<span>05-26</span>
+</div>
+</div>
+<div class="task status-done">
+<div class="task-title">[2026-05-26] Deploy 到 GitHub</div>
+<div class="task-meta">
+<span class="assignee">ningxx-deployer</span>
+<span>05-26</span>
+</div>
+</div>
+<div class="task status-done">
+<div class="task-title">[2026-05-26] 每日報告整合</div>
+<div class="task-meta">
+<span class="assignee">ningxx-designer</span>
+<span>05-26</span>
+</div>
+</div>
+<div class="task status-done">
+<div class="task-title">[2026-05-26] 每日禱文</div>
+<div class="task-meta">
+<span class="assignee">ningxx-poet</span>
+<span>05-26</span>
+</div>
+</div>
+<div class="task status-done">
+<div class="task-title">[2026-05-26] 晚間反思</div>
+<div class="task-meta">
+<span class="assignee">ningxx-poet</span>
+<span>05-26</span>
+</div>
+</div>
+<div class="task status-done">
+<div class="task-title">[2026-05-26] 感知引擎更新</div>
+<div class="task-meta">
+<span class="assignee">ningxx-poet</span>
+<span>05-26</span>
+</div>
+</div>
+<div class="task status-done">
+<div class="task-title">[2026-05-26] 設計視覺排版</div>
+<div class="task-meta">
+<span class="assignee">ningxx-designer</span>
+<span>05-26</span>
+</div>
+</div>
+</div>
+</div>
+<div class="footer">ningxx autonomous agent — Hermes VPS</div>
+</body>
+</html>
