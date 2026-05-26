@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Incident Report — GitHub Pages Legacy Build Failure</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Noto+Sans+TC:wght@300;400;500;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Noto Sans TC', sans-serif;
+  background: #0a0a08;
+  color: #e8e6e3;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+.page {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 80px 48px 120px;
+}
+.top-meta {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  color: #666;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  margin-bottom: 60px;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 42px;
+  font-weight: 400;
+  line-height: 1.15;
+  margin-bottom: 8px;
+  letter-spacing: -0.5px;
+  color: #f5f3f0;
+}
+.subtitle {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 18px;
+  font-weight: 400;
+  color: #888;
+  margin-bottom: 48px;
+  line-height: 1.4;
+}
+.back-link {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  color: #666;
+  text-decoration: none;
+  letter-spacing: 0.5px;
+}
+.back-link:hover { color: #f5f3f0; }
+.section-divider {
+  margin: 40px 0;
+  height: 1px;
+  background: #333;
+}
+.section-title {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px;
+  color: #666;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 24px;
+}
+.status-badge {
+  display: inline-block;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  padding: 4px 10px;
+  border-radius: 2px;
+  letter-spacing: 0.5px;
+  margin-bottom: 24px;
+}
+.status-resolved {
+  background: #1a3a1a;
+  color: #7ec87e;
+  border: 1px solid #2d5a2d;
+}
+.status-errored {
+  background: #3a1a1a;
+  color: #c87e7e;
+  border: 1px solid #5a2d2d;
+}
+.entry {
+  margin-bottom: 32px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid #222;
+}
+.entry-time {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  color: #666;
+  letter-spacing: 0.5px;
+  margin-bottom: 6px;
+}
+.entry-title {
+  font-size: 16px;
+  font-weight: 500;
+  margin-bottom: 8px;
+  color: #f5f3f0;
+}
+.entry-desc {
+  font-size: 14px;
+  color: #999;
+  line-height: 1.7;
+  font-weight: 300;
+}
+.entry-desc code {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px;
+  background: #1a1a18;
+  padding: 2px 6px;
+  border-radius: 2px;
+  color: #c4a882;
+}
+.timeline {
+  border-left: 1px solid #333;
+  padding-left: 24px;
+  margin-left: 8px;
+}
+.timeline-item {
+  position: relative;
+  margin-bottom: 24px;
+}
+.timeline-item::before {
+  content: '';
+  position: absolute;
+  left: -29px;
+  top: 6px;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #333;
+}
+.timeline-item.resolved::before {
+  background: #2d5a2d;
+}
+.timeline-item.errored::before {
+  background: #5a2d2d;
+}
+.timeline-item.active::before {
+  background: #c4a882;
+}
+.community-evidence {
+  background: #111;
+  border: 1px solid #222;
+  padding: 20px;
+  margin: 24px 0;
+  border-radius: 4px;
+}
+.community-evidence h3 {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px;
+  color: #888;
+  margin-bottom: 16px;
+  letter-spacing: 0.5px;
+}
+.evidence-item {
+  font-size: 13px;
+  color: #999;
+  margin-bottom: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #1a1a1a;
+}
+.evidence-item:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+.evidence-item a {
+  color: #c4a882;
+  text-decoration: none;
+}
+.evidence-item a:hover {
+  text-decoration: underline;
+}
+.footer-note {
+  margin-top: 80px;
+  padding-top: 24px;
+  border-top: 1px solid #333;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  color: #555;
+  letter-spacing: 0.5px;
+  display: flex;
+  justify-content: space-between;
+}
+@media (max-width: 640px) {
+  .page { padding: 48px 24px 80px; }
+  h1 { font-size: 32px; }
+  .subtitle { font-size: 16px; }
+}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="top-meta">
+    <span><a href="../log-table-of-content.html" class="back-link">← Log</a></span>
+    <span>Incident Report</span>
+  </div>
+  <h1>GitHub Pages Legacy Build Failure</h1>
+  <p class="subtitle">When the platform itself becomes the blocker.</p>
+  <span class="status-badge status-resolved">RESOLVED</span>
+
+  <div class="section-divider"></div>
+  <div class="section-title">Overview</div>
+  <div class="entry">
+    <div class="entry-desc">
+      2026-05-26，GitHub Pages <code>legacy</code> build type 出現大規模故障。
+      所有新文件部署後返回 404，構建狀態卡在 <code>building</code> 或 <code>errored</code>。
+      影響範圍包括 Hermes_VPS 及新創建的 cold-war-3-document repo。
+    </div>
+  </div>
+
+  <div class="section-divider"></div>
+  <div class="section-title">Timeline</div>
+  <div class="timeline">
+    <div class="timeline-item errored">
+      <div class="entry-time">2026-05-26 ~12:00 HKT</div>
+      <div class="entry-title">發現問題</div>
+      <div class="entry-desc">
+        手動 upload <code>operation_cold_war_internal_report.html</code> 到 Hermes_VPS/artwork/，
+        訪問 https://tw-riviera.github.io/Hermes_VPS/artwork/... 返回 404。
+      </div>
+    </div>
+    <div class="timeline-item errored">
+      <div class="entry-time">~12:30 HKT</div>
+      <div class="entry-title">診斷</div>
+      <div class="entry-desc">
+        API 檢查顯示 <code>status: "errored"</code>，<code>build_type: "legacy"</code>。
+        嘗試 disable/enable Pages、切換 Source、刪除 trigger 文件 — 均無效。
+      </div>
+    </div>
+    <div class="timeline-item errored">
+      <div class="entry-time">~13:00 HKT</div>
+      <div class="entry-title">擴散確認</div>
+      <div class="entry-desc">
+        新 repo cold-war-3-document 同樣無法部署。確認不是單一 repo 問題，
+        而是帳號級的 Pages 基礎設施故障。
+      </div>
+    </div>
+    <div class="timeline-item active">
+      <div class="entry-time">~14:00 HKT</div>
+      <div class="entry-title">社區驗證</div>
+      <div class="entry-desc">
+        搜索發現 2026-05-24~05-26 全球大量 repo 同時遷移 legacy → Actions。
+        多個 PR 標題明確提到 "fixes stuck legacy builds"。
+      </div>
+    </div>
+    <div class="timeline-item resolved">
+      <div class="entry-time">~19:30 HKT</div>
+      <div class="entry-title">自動恢復</div>
+      <div class="entry-desc">
+        Hermes_VPS 及 cold-war-3-document 突然可訪問，API 顯示 <code>status: "built"</code>。
+        無需額外操作，GitHub 端修復完成。
+      </div>
+    </div>
+  </div>
+
+  <div class="section-divider"></div>
+  <div class="section-title">Community Evidence</div>
+  <div class="community-evidence">
+    <h3>2026-05-24 ~ 05-26 相關 PR / Issues</h3>
+    <div class="evidence-item">
+      <strong>saarthitrust.github.io</strong> — Migrate Pages to GitHub Actions deploy (fixes stuck legacy builds)<br>
+      <a href="https://github.com/ggupta0945/saarthitrust.github.io/pull/34">PR #34</a> · 2026-05-26
+    </div>
+    <div class="evidence-item">
+      <strong>pathfinder-edu.github.io</strong> — Deploy static site via GitHub Actions and skip Jekyll processing<br>
+      <a href="https://github.com/pathfinder-edu/pathfinder-edu.github.io/pull/3">PR #3</a> · 2026-05-26
+    </div>
+    <div class="evidence-item">
+      <strong>campaign</strong> — ci: fix Pages deploy (switch legacy → Actions)<br>
+      <a href="https://github.com/RobertLee8888/campaign/pull/32">PR #32</a> · 2026-05-26
+    </div>
+    <div class="evidence-item">
+      <strong>crbgc</strong> — build: take control of Pages with Hugo and explicit workflow<br>
+      <a href="https://github.com/philoserf/crbgc/pull/15">PR #15</a> · 2026-05-25
+    </div>
+    <div class="evidence-item">
+      <strong>danmaku-mock</strong> — Migrate GitHub Pages deploy from legacy to Actions<br>
+      <a href="https://github.com/Octagram-Dance/danmaku-mock/pull/25">PR #25</a> · 2026-05-05 (日文 repo，legacy runner acquire 失敗)
+    </div>
+  </div>
+
+  <div class="section-divider"></div>
+  <div class="section-title">Impact</div>
+  <div class="entry">
+    <div class="entry-desc">
+      <strong>Affected repos:</strong> Hermes_VPS, cold-war-3-document<br>
+      <strong>Duration:</strong> ~7 hours (12:00 ~ 19:30 HKT)<br>
+      <strong>Severity:</strong> High — 所有新文件無法部署，現有文件間歇性 404<br>
+      <strong>Workaround:</strong> 無有效繞過方案，僅能等待 GitHub 端修復
+    </div>
+  </div>
+
+  <div class="section-divider"></div>
+  <div class="section-title">Root Cause (Speculated)</div>
+  <div class="entry">
+    <div class="entry-desc">
+      GitHub Pages <code>legacy</code> build infrastructure 於 2026-05 出現大規模不穩定。
+      雖無官方公告，但社區密集報告及自動恢復模式表明這是平台級的計劃性遷移或基礎設施故障。
+      <br><br>
+      <code>build_type: "legacy"</code> 已被標記為棄用，但未完全關閉。
+      帳號可能卡在遷移隊列中，導致構建長時間 pending 或失敗。
+    </div>
+  </div>
+
+  <div class="section-divider"></div>
+  <div class="section-title">Action Items</div>
+  <div class="entry">
+    <div class="entry-desc">
+      1. <strong>Monitor:</strong> 持續觀察 Pages 狀態，若再次出現 <code>errored</code> 考慮遷移到 GitHub Actions workflow<br>
+      2. <strong>Backup:</strong> 評估 Cloudflare Pages / Netlify 作為備用托管<br>
+      3. <strong>Document:</strong> 保留此 incident log 供未來參考
+    </div>
+  </div>
+
+  <div class="footer-note">
+    <span>Hermes VPS · Incident Report</span>
+    <span>2026-05-26 HKT</span>
+  </div>
+</div>
+</body>
+</html>
